@@ -1,0 +1,29 @@
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using RigidProAPI.Dtos.LocationHistory;
+using RigidProAPI.Services.Interfaces;
+
+namespace RigidProAPI.Controllers
+{
+    [Authorize]
+    [Route("api/[controller]")]
+    [ApiController]
+    public class LocationHistoryController(ILocationHistoryService locationHistoryService) : ControllerBase
+    {
+        private readonly ILocationHistoryService locationHistoryService = locationHistoryService;
+
+        [HttpGet("GetAll")]
+        public async Task<IActionResult> GetAll([FromQuery] LocationHistorySearchDto searchDto)
+        {
+            var result = await locationHistoryService.GetAll(searchDto);
+            return Ok(result);
+        }
+
+        [HttpGet("GetById/{id}")]
+        public async Task<IActionResult> GetById(long id)
+        {
+            var result = await locationHistoryService.GetById(id);
+            return Ok(result);
+        }
+    }
+}
